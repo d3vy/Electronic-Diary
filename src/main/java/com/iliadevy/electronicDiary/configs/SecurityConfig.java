@@ -23,7 +23,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     private final UserService userService;
 
-    //Тоже стоит переделать
+    //Тоже стоит переделать.
     //FaceControl
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
