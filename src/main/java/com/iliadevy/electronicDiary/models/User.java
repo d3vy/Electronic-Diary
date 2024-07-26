@@ -38,14 +38,13 @@ public class User implements UserDetails {
 	@Column(name = "lastname")
 	private String lastname;
 
-	private Collection<Role> roles;
-
 	@ManyToMany
 	@JoinTable(
 			name = "customers_roles",
 			joinColumns = @JoinColumn(name = "customer_id"),
 			inverseJoinColumns = @JoinColumn(name = "role_id")
 	)
+	private Collection<Role> roles;
 
 
 

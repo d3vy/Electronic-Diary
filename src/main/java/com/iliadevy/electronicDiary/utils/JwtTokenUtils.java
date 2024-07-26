@@ -16,13 +16,13 @@ import java.util.stream.Collectors;
 public class JwtTokenUtils {
 
     @Value("${jwt.secret.key}")
-    private String secretKey;
+    private static String secretKey;
 
     @Value("${jwt.lifetime}")
-    private Duration lifetime;
+    private static Duration lifetime;
 
     //Метод для генерации токена из информации о пользователе.
-    public String generateToken(UserDetails userDetails) {
+    public static String generateToken(UserDetails userDetails) {
 
         //Формируем payload(полезная информация) для токена.
         Map<String, Object> claims = new HashMap<>();

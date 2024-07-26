@@ -3,6 +3,7 @@ package com.iliadevy.electronicDiary.configs;
 import com.iliadevy.electronicDiary.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -10,16 +11,15 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-//В эту аннотацию входит @Configuration.
 @EnableWebSecurity
 //Создание конструктора для final полей.
 @RequiredArgsConstructor
 //Для защиты отдельных методов.
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@Configuration
 public class SecurityConfig {
     private final UserService userService;
 
@@ -30,7 +30,8 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests((request)-> request
-                        .requestMatchers("/secured").authenticated()
+                        .requestMatchers(
+"/secured").authenticated()
                         .requestMatchers("/info").authenticated()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().permitAll()
