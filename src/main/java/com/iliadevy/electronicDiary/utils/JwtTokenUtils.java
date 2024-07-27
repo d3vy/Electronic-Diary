@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Component
 public class JwtTokenUtils {
@@ -54,12 +53,12 @@ public class JwtTokenUtils {
     }
 
     //Метод для получения username из токена.
-    public String getUsernameFromToken(String token) {
+    public String getUsername(String token) {
         return getAllClaimsFromToken(token).getSubject();
     }
 
     //Метод для получения списка ролей из токена.
-    public List<String> getRolesFromToken(String token) {
+    public List<String> getRoles(String token) {
         return getAllClaimsFromToken(token).get("roles", List.class);
     }
 

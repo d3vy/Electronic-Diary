@@ -2,6 +2,8 @@ package com.iliadevy.electronicDiary.configs;
 
 import com.iliadevy.electronicDiary.services.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,15 +15,18 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
-//Создание конструктора для final полей.
-@RequiredArgsConstructor
 //Для защиты отдельных методов.
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfig {
+
     private final UserService userService;
+    private final JwtRequestFilter jwtRequestFilter;
+
 
     //Тоже стоит переделать.
     //FaceControl
@@ -29,11 +34,11 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
+                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .authorizeHttpRequests((request)-> request
-                        .requestMatchers(
-"/secured").authenticated()
-                        .requestMatchers("/info").authenticated()
-                        .requestMatchers("/admin").hasRole("ADMIN")
+//                        .requestMatchers("/secured").authenticated()
+//                        .requestMatchers("/info").authenticated()
+//                        .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().permitAll()
                 )
                 .formLogin((formLogin)-> formLogin

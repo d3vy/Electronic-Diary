@@ -1,14 +1,19 @@
 package com.iliadevy.electronicDiary.services;
 
+import com.iliadevy.electronicDiary.dtos.RegistrationUserDto;
 import com.iliadevy.electronicDiary.models.User;
 import com.iliadevy.electronicDiary.repositories.RoleRepository;
 import com.iliadevy.electronicDiary.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,12 +21,15 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@Setter
 //Создает конструктор для final полей.
-@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
 
-    private final UserRepository userRepository;
-    private final RoleRepository roleRepository;
+
+    private UserRepository userRepository;
+    private RoleService roleService;
+    private BCryptPasswordEncoder passwordEncoder;
+
 
     //Поиск пользователя по username.
     public Optional<User> findByUsername(String username) {
@@ -45,15 +53,20 @@ public class UserService implements UserDetailsService {
                 user.getRoles()
                         .stream()
                         .map(
-                                role-> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList())
+                                role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList())
         );
     }
 
     //Нужно сделать проверку на корректность введенных данных.
-    public void createNewUser(User user) {
+    public User createNewUser(RegistrationUserDto registrationUserDto) {
+        User user = new User();
+        user.setUsername(registrationUserDto.getUsername());
+        user.setEmail(registrationUserDto.getEmail());
+        user.setPassword(passwordEncoder.encode(registrationUserDto.getPassword()));
+
         //Добавить ошибку, если нет роли.
-        user.setRoles(List.of(roleRepository.findByName("ROLE_USER").get()));
-        userRepository.save(user);
+        user.setRoles(List.of(roleService.getUserRole()));
+        return userRepository.save(user);
     }
 
 }
