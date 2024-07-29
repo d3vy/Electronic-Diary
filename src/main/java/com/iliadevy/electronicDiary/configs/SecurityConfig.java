@@ -3,6 +3,7 @@ package com.iliadevy.electronicDiary.configs;
 import com.iliadevy.electronicDiary.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.LogoutConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -19,9 +21,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @EnableWebSecurity
 //Для защиты отдельных методов.
-@EnableGlobalMethodSecurity(prePostEnabled = true)
 @Configuration
 @RequiredArgsConstructor
+@Slf4j
 public class SecurityConfig {
 
     private final UserService userService;
@@ -35,10 +37,12 @@ public class SecurityConfig {
 
         http
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+                .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((request)-> request
-//                        .requestMatchers("/secured").authenticated()
-//                        .requestMatchers("/info").authenticated()
-//                        .requestMatchers("/admin").hasRole("ADMIN")
+                        .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/unsecured/**").permitAll()
+                        .requestMatchers("/secured/**").authenticated()
+                        .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().permitAll()
                 )
                 .formLogin((formLogin)-> formLogin
@@ -46,7 +50,7 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .logout(LogoutConfigurer::permitAll);
-
+        log.info("SecurityConfig отработал");
         return http.build();
     }
 

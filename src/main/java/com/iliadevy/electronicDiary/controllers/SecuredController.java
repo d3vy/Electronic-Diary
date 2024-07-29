@@ -7,16 +7,18 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.security.Principal;
 
-
 @RestController
+@RequestMapping("/secured")
 @RequiredArgsConstructor
-@RequestMapping("/unsecured")
-public class MainController {
+public class SecuredController {
 
     @GetMapping("/")
-    public String unsecuredData() {
+    public String securedData() {
         return "Unsecured data";
     }
+
+    @GetMapping("/info")
+    public String userData(Principal principal) {
+        return principal.getName();
+    }
 }
-
-

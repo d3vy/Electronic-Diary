@@ -5,19 +5,19 @@ import com.iliadevy.electronicDiary.dtos.RegistrationUserDto;
 import com.iliadevy.electronicDiary.services.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/auth")
 public class AuthController {
 
     private final AuthService authService;
 
 
     //Post метод принимает JwtRequest, внутри которого username и password для аутентификации пользователя.
-    @PostMapping("/auth")
+    @PostMapping("/login")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authRequest) {
         return authService.createAuthenticationToken(authRequest);
     }

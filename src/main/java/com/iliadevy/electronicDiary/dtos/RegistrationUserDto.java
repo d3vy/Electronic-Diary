@@ -1,13 +1,14 @@
 package com.iliadevy.electronicDiary.dtos;
 
-import lombok.Data;
 
+public record RegistrationUserDto(
+        String username,
+        String password,
+        String confirmPassword,
+        String email,
+        String firstname,
+        String lastname
+) {
 
-
-@Data
-public class RegistrationUserDto {
-    private String username;
-    private String password;
-    private String confirmPassword;
-    private String email;
 }
+

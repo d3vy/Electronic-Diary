@@ -5,18 +5,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
-
-
 @RestController
+@RequestMapping("/admin")
 @RequiredArgsConstructor
-@RequestMapping("/unsecured")
-public class MainController {
+public class AdminController {
 
     @GetMapping("/")
-    public String unsecuredData() {
-        return "Unsecured data";
+    public String adminData() {
+        return "Admin data";
     }
+
+
 }
-
-

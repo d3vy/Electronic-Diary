@@ -15,13 +15,13 @@ import java.util.*;
 public class JwtTokenUtils {
 
     @Value("${jwt.secret.key}")
-    private static String secretKey;
+    private String secretKey;
 
     @Value("${jwt.lifetime}")
-    private static Duration lifetime;
+    private Duration lifetime;
 
     //Метод для генерации токена из информации о пользователе.
-    public static String generateToken(UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails) {
 
         //Формируем payload(полезная информация) для токена.
         Map<String, Object> claims = new HashMap<>();
@@ -53,7 +53,7 @@ public class JwtTokenUtils {
     }
 
     //Метод для получения username из токена.
-    public String getUsername(String token) {
+    public String getEmail(String token) {
         return getAllClaimsFromToken(token).getSubject();
     }
 

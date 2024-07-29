@@ -21,14 +21,17 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@Setter
 //Создает конструктор для final полей.
 public class UserService implements UserDetailsService {
 
-
+    @Autowired
     private UserRepository userRepository;
+    @Autowired
     private RoleService roleService;
+    @Autowired
+    @Lazy
     private BCryptPasswordEncoder passwordEncoder;
+
 
 
     //Поиск пользователя по username.
@@ -60,9 +63,11 @@ public class UserService implements UserDetailsService {
     //Нужно сделать проверку на корректность введенных данных.
     public User createNewUser(RegistrationUserDto registrationUserDto) {
         User user = new User();
-        user.setUsername(registrationUserDto.getUsername());
-        user.setEmail(registrationUserDto.getEmail());
-        user.setPassword(passwordEncoder.encode(registrationUserDto.getPassword()));
+        user.setUsername(registrationUserDto.username());
+        user.setEmail(registrationUserDto.email());
+        user.setPassword(passwordEncoder.encode(registrationUserDto.password()));
+        user.setFirstname(registrationUserDto.firstname());
+        user.setLastname(registrationUserDto.lastname());
 
         //Добавить ошибку, если нет роли.
         user.setRoles(List.of(roleService.getUserRole()));

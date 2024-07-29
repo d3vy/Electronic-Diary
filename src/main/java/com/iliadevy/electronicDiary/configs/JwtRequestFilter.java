@@ -12,7 +12,6 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.lang.NonNullApi;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,7 +35,7 @@ public class JwtRequestFilter extends OncePerRequestFilter{
        if(authHeader != null && authHeader.startsWith("Bearer ")){
            token = authHeader.substring(7);
            try {
-               username = jwtTokenUtils.getUsername(token);
+               username = jwtTokenUtils.getEmail(token);
            }catch (ExpiredJwtException e){
                log.debug("Время токена вышло");
            }catch (SignatureException e){

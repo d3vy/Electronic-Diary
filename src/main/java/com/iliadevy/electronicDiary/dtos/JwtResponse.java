@@ -1,10 +1,7 @@
 package com.iliadevy.electronicDiary.dtos;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
+public record JwtResponse(
+        String token
+) {
 
-@Data
-@AllArgsConstructor
-public class JwtResponse {
-    private String token;
 }
