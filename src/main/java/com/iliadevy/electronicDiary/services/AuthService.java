@@ -33,9 +33,9 @@ public class AuthService {
     private final JwtTokenUtils jwtTokenUtils;
 
 
-    //Метод принимает JwtRequest, внутри которого username и password для аутентификации пользователя.
-
-    public ResponseEntity<?> createAuthenticationToken(JwtRequest authRequest) {
+    //Метод аутентификации пользователя. Принимает JwtRequest, внутри которого username и password.
+    //
+    public String createAuthenticationToken(JwtRequest authRequest) {
 
         //В идеале весь этот код переместить в service.
         //Ошибки обработать через глобальный перехват исключений.
@@ -43,24 +43,24 @@ public class AuthService {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.username(), authRequest.password()));
         } catch (BadCredentialsException e) {
             //Выдаем ошибку если данных нет.
-            return new ResponseEntity<>(new ApplicationError(HttpStatus.UNAUTHORIZED.value(), "Invalid username or password"), HttpStatus.UNAUTHORIZED);
+            return "redirect:/auth/login";
         }
 
         //Генерация токена по username.
         UserDetails userDetails = userService.loadUserByUsername(authRequest.username());
         String token = jwtTokenUtils.generateToken(userDetails);
-        return ResponseEntity.ok(new JwtResponse(token));
+        return "redirect:/secured/main";
     }
 
     //Метод регистрации нового пользователя.
-    public ResponseEntity<?> createNewUser(RegistrationUserDto registrationUserDto) {
+    public String createNewUser(RegistrationUserDto registrationUserDto) {
         if (!registrationUserDto.password().equals(registrationUserDto.confirmPassword())) {
-            return new ResponseEntity<>(new ApplicationError(HttpStatus.BAD_REQUEST.value(), "Passwords do not match"), HttpStatus.BAD_REQUEST);
+            return "redirect:/auth/registration";
         }
         if (userService.findByUsername(registrationUserDto.username()).isPresent()) {
-            return new ResponseEntity<>(new ApplicationError(HttpStatus.BAD_REQUEST.value(), "Username already exists"), HttpStatus.BAD_REQUEST);
+            return "redirect:/auth/registration";
         }
         User user = userService.createNewUser(registrationUserDto);
-        return ResponseEntity.ok(new CustomerDto(user.getId(), user.getUsername(), user.getEmail(), user.getFirstname(), user.getLastname()));
+        return "redirect:/auth/login";
     }
 }

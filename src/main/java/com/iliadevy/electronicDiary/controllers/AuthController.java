@@ -4,27 +4,36 @@ import com.iliadevy.electronicDiary.dtos.JwtRequest;
 import com.iliadevy.electronicDiary.dtos.RegistrationUserDto;
 import com.iliadevy.electronicDiary.services.AuthService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/auth")
 public class AuthController {
 
     private final AuthService authService;
 
+    @GetMapping("/login")
+    public String showLoginPage(){
+        return "LoginPage";
+    }
+
+    @GetMapping("/registration")
+    public String showRegistrationPage(){
+        return "RegistrationPage";
+    }
 
     //Post метод принимает JwtRequest, внутри которого username и password для аутентификации пользователя.
     @PostMapping("/login")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authRequest) {
+    public String createAuthenticationToken(@RequestBody JwtRequest authRequest) {
         return authService.createAuthenticationToken(authRequest);
     }
 
     //Метод регистрации нового пользователя.
     @PostMapping("/registration")
-    public ResponseEntity<?> createNewUser(@RequestBody RegistrationUserDto registrationUserDto) {
+    public String createNewUser(@RequestBody RegistrationUserDto registrationUserDto) {
         return authService.createNewUser(registrationUserDto);
     }
 }

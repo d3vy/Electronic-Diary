@@ -39,8 +39,8 @@ public class SecurityConfig {
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((request)-> request
-                        .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/unsecured/**").permitAll()
+                        .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/secured/**").authenticated()
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().permitAll()
@@ -50,7 +50,6 @@ public class SecurityConfig {
                         .permitAll()
                 )
                 .logout(LogoutConfigurer::permitAll);
-        log.info("SecurityConfig отработал");
         return http.build();
     }
 

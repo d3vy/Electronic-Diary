@@ -1,22 +1,15 @@
 package com.iliadevy.electronicDiary.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.security.Principal;
-
-
-@RestController
+@Controller
 @RequiredArgsConstructor
-@RequestMapping("/unsecured")
+@RequestMapping("/secured")
 public class MainController {
 
-    @GetMapping("/")
-    public String unsecuredData() {
-        return "Unsecured data";
+    public String showMainPage() {
+        return "MainPage";
     }
 }
-
-
