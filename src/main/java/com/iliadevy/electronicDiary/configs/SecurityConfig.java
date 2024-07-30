@@ -46,7 +46,7 @@ public class SecurityConfig {
                         .anyRequest().permitAll()
                 )
                 .formLogin((formLogin)-> formLogin
-                        .loginPage("/login")
+                        .loginPage("/auth/login")
                         .permitAll()
                 )
                 .logout(LogoutConfigurer::permitAll);

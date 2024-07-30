@@ -15,11 +15,13 @@ public class AuthController {
 
     private final AuthService authService;
 
+    //Метод, который отвечает за вывод страницы авторизации.
     @GetMapping("/login")
     public String showLoginPage(){
         return "LoginPage";
     }
 
+    //Метод, который отвечает за вывод страницы регистрации.
     @GetMapping("/registration")
     public String showRegistrationPage(){
         return "RegistrationPage";
@@ -27,13 +29,13 @@ public class AuthController {
 
     //Post метод принимает JwtRequest, внутри которого username и password для аутентификации пользователя.
     @PostMapping("/login")
-    public String createAuthenticationToken(@RequestBody JwtRequest authRequest) {
+    public String createAuthenticationToken(@ModelAttribute JwtRequest authRequest) {
         return authService.createAuthenticationToken(authRequest);
     }
 
     //Метод регистрации нового пользователя.
     @PostMapping("/registration")
-    public String createNewUser(@RequestBody RegistrationUserDto registrationUserDto) {
+    public String createNewUser(@ModelAttribute RegistrationUserDto registrationUserDto) {
         return authService.createNewUser(registrationUserDto);
     }
 }

@@ -64,24 +64,24 @@
 <body>
 <div class="container">
     <h1>Регистрация</h1>
-    <form action="#" method="post">
-        <label>
-            <input type="text" name="username" placeholder="Имя пользователя" required>
+    <form action="/auth/registration" method="post">
+        <label for="username">
+            <input id="username" type="text" name="username" placeholder="Имя пользователя" required>
         </label>
-        <label>
-            <input type="password" name="password" placeholder="Пароль" required>
+        <label for="password">
+            <input id="password" type="password" name="password" placeholder="Пароль" required>
         </label>
-        <label>
-            <input type="password" name="confirmPassword" placeholder="Подтвердите пароль" required>
+        <label for="confirmPassword">
+            <input id="confirmPassword" type="password" name="confirmPassword" placeholder="Подтвердите пароль" required>
         </label>
-        <label>
-            <input type="email" name="email" placeholder="Электронная почта" required>
+        <label for="email">
+            <input id="email" type="email" name="email" placeholder="Электронная почта" required>
         </label>
-        <label>
-            <input type="text" name="firstname" placeholder="Имя" required>
+        <label for="firstname">
+            <input id="firstname" type="text" name="firstname" placeholder="Имя" required>
         </label>
-        <label>
-            <input type="text" name="lastname" placeholder="Фамилия" required>
+        <label for="lastname">
+            <input id="lastname" type="text" name="lastname" placeholder="Фамилия" required>
         </label>
         <button type="submit">Зарегистрироваться</button>
     </form>

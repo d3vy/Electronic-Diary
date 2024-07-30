@@ -34,7 +34,6 @@ public class AuthService {
 
 
     //Метод аутентификации пользователя. Принимает JwtRequest, внутри которого username и password.
-    //
     public String createAuthenticationToken(JwtRequest authRequest) {
 
         //В идеале весь этот код переместить в service.
@@ -43,21 +42,24 @@ public class AuthService {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.username(), authRequest.password()));
         } catch (BadCredentialsException e) {
             //Выдаем ошибку если данных нет.
+            log.error("Invalid username or password.");
             return "redirect:/auth/login";
         }
 
         //Генерация токена по username.
         UserDetails userDetails = userService.loadUserByUsername(authRequest.username());
         String token = jwtTokenUtils.generateToken(userDetails);
-        return "redirect:/secured/main";
+        return "redirect:/secured/home";
     }
 
     //Метод регистрации нового пользователя.
     public String createNewUser(RegistrationUserDto registrationUserDto) {
         if (!registrationUserDto.password().equals(registrationUserDto.confirmPassword())) {
+            log.error("Passwords do not match.");
             return "redirect:/auth/registration";
         }
         if (userService.findByUsername(registrationUserDto.username()).isPresent()) {
+            log.error("Username already exists.");
             return "redirect:/auth/registration";
         }
         User user = userService.createNewUser(registrationUserDto);

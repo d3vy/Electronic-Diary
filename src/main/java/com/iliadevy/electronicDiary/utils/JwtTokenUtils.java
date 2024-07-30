@@ -39,7 +39,7 @@ public class JwtTokenUtils {
         //Время создания + время жизни токена.
         Date expiredDate = new Date(issuedDate.getTime() + lifetime.toMillis());
 
-        return Jwts.builder()
+        String token = Jwts.builder()
                 //Наполнили полезными данными
                 .setClaims(claims)
                 .setSubject(userDetails.getUsername())
@@ -48,6 +48,8 @@ public class JwtTokenUtils {
                 //Добавили подпись.
                 .signWith(SignatureAlgorithm.HS256, secretKey)
                 .compact();
+
+        return token;
 
 
     }
